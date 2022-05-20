@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /**
  * @author 张俊鸿
- * @description: 循环首次最佳适应算法
+ * @description: 循环首次适应算法
  * @since 2022-05-20 12:19
  */
 public class NextFit {

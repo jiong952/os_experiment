@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 /**
  * @author 张俊鸿
- * @description: 最佳适应算法 找到满足要求且最小的分区
- * @since 2022-05-20 14:07
+ * @description: 首次适应算法
+ * @since 2022-05-20 16:10
  */
-public class BestFit {
+public class FirstFit {
     static Scanner scanner = new Scanner(System.in);
     /**
      * 内存分区
@@ -37,39 +37,34 @@ public class BestFit {
      *
      * @param memorySize 内存大小
      */
-    public BestFit(int memorySize){
+    public FirstFit(int memorySize) {
         this.memorySize = memorySize;
         this.freeZones = new LinkedList<>();
         //向分区表加入空闲分区
         freeZones.add(new Zone(memorySize,0));
     }
 
-
     /**
-     * 寻找空闲分区 找到满足要求且最小的分区
+     * 找到第一个足够大的分区
      *
      * @param size 大小
      */
-    public void findBestFree(int size) {
-        //标记最佳
-        int bestSize = Integer.MAX_VALUE;
+    public void findFirstFree(int size) {
         //最佳分区的下标
-        int bestIndex = 0;
+        int index = 0;
         //判断是否找到
         boolean flag = false;
+        //遍历寻找
         for (int i = 0; i < freeZones.size(); i++) {
             if(freeZones.get(i).state.equals("空闲") && (freeZones.get(i).size > size)){
-                //找到足够大的
-                //判断是否更小
-                if(freeZones.get(i).size < bestSize){
-                    bestSize = freeZones.get(i).size;
-                    bestIndex = i;
-                    flag = true;
-                }
+                //找到足够大的了
+                index = i;
+                flag = true;
+                break;
             }
         }
         if (flag){
-            allocation(size,bestIndex,freeZones.get(bestIndex));
+            allocation(size,index,freeZones.get(index));
         }else {
             //遍历完找不到没有空闲分区
             System.out.println("不存在可以存放"+size+"的内存分区");
@@ -160,11 +155,11 @@ public class BestFit {
     }
 
     public static void main(String[] args) {
-        System.out.println("=========最佳适应算法============");
+        System.out.println("=========首次适应算法============");
         System.out.println("请输入初始内存总大小");
         int memorySize = scanner.nextInt();
         //初始化
-        BestFit bestFit = new BestFit(memorySize);
+        FirstFit firstFit = new FirstFit(memorySize);
         while(true) {
             System.out.println("请输入要分配内存还是要释放内存");
             System.out.println("1 分配内存 2 释放内存");
@@ -173,19 +168,18 @@ public class BestFit {
                 case 1:{
                     System.out.println("请输入要分配的内存大小");
                     int size = scanner.nextInt();
-                    bestFit.findBestFree(size);
-                    bestFit.printCurrent();
+                    firstFit.findFirstFree(size);
+                    firstFit.printCurrent();
                     break;
                 }
                 case 2:{
                     System.out.println("输入想要释放内存的分区号");
                     int index = scanner.nextInt();
-                    bestFit.recycle(index);
-                    bestFit.printCurrent();
+                    firstFit.recycle(index);
+                    firstFit.printCurrent();
                     break;
                 }
             }
         }
     }
-
 }
