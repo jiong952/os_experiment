@@ -1,13 +1,13 @@
-package com.zjh;
+package com.zjh.processScheduling;
 
 import java.util.*;
 
 /**
  * @author 张俊鸿
- * @description: 非抢占式高响应比调度算法
- * @since 2022-05-20 9:14
+ * @description: 非抢占式短作业优先算法
+ * @since 2022-05-20 10:38
  */
-public class work03HRRN {
+public class SJF {
     static Scanner scanner = new Scanner(System.in);
     /**
      * 进程控制块PCB
@@ -20,7 +20,6 @@ public class work03HRRN {
         int beginTime; // 开始时间
         int hasRunTime = 0; // 已经运行时间
         int turnRoundTime; // 周转时间
-        double priority; // 优先权 【还没到达优先权为0】
         @Override
         public int compareTo(PCB o) { // 按照 到达时间 进入就绪队列
             return  this.arriveTime - o.arriveTime;
@@ -81,22 +80,21 @@ public class work03HRRN {
             }
         }
     }
+
     /**
-     * 计算优先级并弹出最大优先级的进程
+     * 取得最短服务时间进程
      *
-     * @param readyList 就绪列表
+     * @param readyList 准备好清单
      * @param cpuTime   cpu时间
      * @return {@link PCB}
      */
-    public static PCB getByPriority(List<PCB> readyList, int cpuTime){
+    public static PCB getByServerTime(List<PCB> readyList, int cpuTime){
         //遍历list
-        double max = 0.0;
+        int minServerTime = Integer.MAX_VALUE;
         int index = 0;
         for (int i = 0; i < readyList.size(); i++) {
-            readyList.get(i).waitTime = cpuTime - readyList.get(i).arriveTime;
-            readyList.get(i).priority = (readyList.get(i).waitTime + readyList.get(i).serveTime) / readyList.get(i).serveTime;
-            if(readyList.get(i).priority > max) {
-                max = readyList.get(i).priority;
+            if(readyList.get(i).serveTime < minServerTime){
+                minServerTime = readyList.get(i).serveTime;
                 index = i;
             }
         }
@@ -139,7 +137,7 @@ public class work03HRRN {
                 check(readyList,cpuTime);
                 //上一个运行完毕，要取出新的
                 if(runningPcb == null){
-                    runningPcb = getByPriority(readyList,cpuTime);
+                    runningPcb = getByServerTime(readyList,cpuTime);
                     //响应时间
                     runningPcb.beginTime = cpuTime;
                     printCurrent(runningPcb,cpuTime);
@@ -163,7 +161,6 @@ public class work03HRRN {
             }
         }
     }
-
 
     /**
      * 显示周转时间
@@ -190,15 +187,9 @@ public class work03HRRN {
 
     public static void main(String[] args) {
         input();
-        System.out.println("======非抢占式高响应比调度算法======");
+        System.out.println("======非抢占式短作业优先调度算法======");
         run();
         showTurnAroundTime();
     }
-
-
-
-
-
-
 
 }
