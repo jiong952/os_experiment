@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @author 张俊鸿
- * @description: 高响应比调度算法
+ * @description: 非抢占式高响应比调度算法
  * @since 2022-05-20 9:14
  */
 public class work03HRRN {
@@ -190,6 +190,7 @@ public class work03HRRN {
 
     public static void main(String[] args) {
         input();
+        System.out.println("======非抢占式高响应比调度算法======");
         run();
         showTurnAroundTime();
     }
