@@ -5,12 +5,11 @@ import java.util.Scanner;
 
 /**
  * @author 张俊鸿
- * @description: 循环首次最佳适应算法
- * @since 2022-05-20 12:19
+ * @description: 最佳适应算法 找到满足要求且最小的分区
+ * @since 2022-05-20 14:07
  */
-public class NextFit {
+public class BestFit {
     static Scanner scanner = new Scanner(System.in);
-
     /**
      * 内存分区
      */
@@ -32,49 +31,46 @@ public class NextFit {
     public static int memorySize;
     /** 空闲分区表 **/
     public static LinkedList<Zone> freeZones;
-    /** 上一次分配的空闲分区下标 **/
-    public  static  int last;
 
     /**
      * 初始化内存
      *
      * @param memorySize 内存大小
      */
-    public NextFit(int memorySize) {
+    public BestFit(int memorySize){
         this.memorySize = memorySize;
         this.freeZones = new LinkedList<>();
-        this.last = 0;
         //向分区表加入空闲分区
         freeZones.add(new Zone(memorySize,0));
     }
 
+
     /**
-     * 寻找空闲分区
+     * 寻找空闲分区 找到满足要求且最小的分区
      *
      * @param size 大小
      */
-    public void findFree(int size){
-        //获得上一次分配的空闲分区
-        Zone lastZone = freeZones.get(last);
-        //判断是否还足够继续分
-        //不够则从last开始遍历，找到一个，分配，更新下标
-        if(lastZone.state.equals("空闲") && (lastZone.size > size)){
-            //该空闲区足够
-            allocation(size,last,lastZone);
-            return;
-        }else {
-            //大小不够，循环寻找下一个
-            int zoneNum = freeZones.size();
-            for (int i = ((last + 1) % zoneNum); i != last; i = (i+1) % zoneNum) {
-                Zone temp = freeZones.get(i);
-                if(temp.state.equals("空闲") && (temp.size > size)){
-                    //该空闲区足够 分配
-                    allocation(size,i,temp);
-                    //更新下标
-                    this.last = i;
-                    return;
+    private void findBestFree(int size) {
+        //标记最佳
+        int bestSize = Integer.MAX_VALUE;
+        //最佳分区的下标
+        int bestIndex = 0;
+        //判断是否找到
+        boolean flag = false;
+        for (int i = 0; i < freeZones.size(); i++) {
+            if(freeZones.get(i).state.equals("空闲") && (freeZones.get(i).size > size)){
+                //找到足够大的
+                //判断是否更小
+                if(freeZones.get(i).size < bestSize){
+                    bestSize = freeZones.get(i).size;
+                    bestIndex = i;
+                    flag = true;
                 }
             }
+        }
+        if (flag){
+            allocation(size,bestIndex,freeZones.get(bestIndex));
+        }else {
             //遍历完找不到没有空闲分区
             System.out.println("不存在可以存放"+size+"的内存分区");
         }
@@ -130,16 +126,12 @@ public class NextFit {
             //移除后两个
             freeZones.remove(index);
             freeZones.remove(index + 1);
-            //更新下标为前一个
-            last = index - 1;
         }else if(front && !next){
             //前一个是空的，后一个不是
             Zone frontZone = freeZones.get(index - 1);
             frontZone.size = frontZone.size + zone.size;
             //移除
             freeZones.remove(index);
-            //更新下标为前一个
-            last = index - 1;
             zone.state = "空闲";
         }else if(!front && next){
             //后一个是空的，前一个不是
@@ -167,13 +159,12 @@ public class NextFit {
         }
     }
 
-
     public static void main(String[] args) {
-        System.out.println("=========循环首次适应算法============");
+        System.out.println("=========最佳适应算法============");
         System.out.println("请输入初始内存总大小");
         int memorySize = scanner.nextInt();
         //初始化
-        NextFit nextFit = new NextFit(memorySize);
+        BestFit bestFit = new BestFit(memorySize);
         while(true) {
             System.out.println("请输入要分配内存还是要释放内存");
             System.out.println("1 分配内存 2 释放内存");
@@ -182,20 +173,19 @@ public class NextFit {
                 case 1:{
                     System.out.println("请输入要分配的内存大小");
                     int size = scanner.nextInt();
-                    nextFit.findFree(size);
-                    nextFit.printCurrent();
+                    bestFit.findBestFree(size);
+                    bestFit.printCurrent();
                     break;
                 }
                 case 2:{
                     System.out.println("输入想要释放内存的分区号");
                     int index = scanner.nextInt();
-                    nextFit.recycle(index);
-                    nextFit.printCurrent();
+                    bestFit.recycle(index);
+                    bestFit.printCurrent();
                     break;
                 }
             }
         }
     }
-
 
 }
