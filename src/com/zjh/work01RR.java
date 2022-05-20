@@ -51,7 +51,7 @@ public class work01RR {
         timeSlice = scanner.nextInt();
         for (int i = 0; i < pcb_num; i++) {
             System.out.println("进程号"+ (i+1));
-            System.out.print("请输入进程名");
+            System.out.print("请输入进程名：");
             String name = scanner.next();
             System.out.print("请输入到达时间：");
             int arriveTime = scanner.nextInt();
@@ -89,7 +89,7 @@ public class work01RR {
     }
 
     public static void printCurrent(PCB pcb,int cpuTime){
-        System.out.println("\t当前时间:"+cpuTime+"\t运行的进程:"+pcb.name+"\t剩余运行时间:"+(pcb.serveTime-pcb.hasRunTime));
+        System.out.println("当前时间:"+cpuTime+"\t运行的进程:"+pcb.name+"\t剩余运行时间:"+(pcb.serveTime-pcb.hasRunTime));
     }
 
     /**
@@ -169,7 +169,9 @@ public class work01RR {
             int turnAroundTime = pcbArrays[i].turnRoundTime;
             double weightTurnAroundTime = turnAroundTime*1.0/pcbArrays[i].serveTime;
             int beginTime = pcbArrays[i].beginTime;
-            System.out.printf(i+"\t"+turnAroundTime+"\t"+weightTurnAroundTime+"\t"+beginTime+"\n");
+            System.out.printf(i+"\t   "+turnAroundTime+"\t\t   ");
+            System.out.printf("%.1f", weightTurnAroundTime);
+            System.out.print("\t\t  "+beginTime+"\n");
             averageT += turnAroundTime;
             averageWTAT += weightTurnAroundTime;
         }
