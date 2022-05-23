@@ -135,8 +135,8 @@ public class FirstFit {
             frontZone.size = frontZone.size + zone.size + nextZone.size;
             frontZone.num = -1;
             //移除后两个
-            freeZones.remove(index);
             freeZones.remove(index + 1);
+            freeZones.remove(index);
         }else if(front && !next){
             //前一个是空的，后一个不是
             Zone frontZone = freeZones.get(index - 1);

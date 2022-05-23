@@ -95,7 +95,7 @@ public class HRRN {
         for (int i = 0; i < readyList.size(); i++) {
             readyList.get(i).waitTime = cpuTime - readyList.get(i).arriveTime;
             readyList.get(i).priority = (readyList.get(i).waitTime + readyList.get(i).serveTime) / readyList.get(i).serveTime;
-            if(readyList.get(i).priority > max) {
+            if(readyList.get(i).priority >= max) {
                 max = readyList.get(i).priority;
                 index = i;
             }
