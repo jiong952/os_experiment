@@ -176,7 +176,7 @@ public class HRRN {
             int turnAroundTime = pcbArrays[i].turnRoundTime;
             double weightTurnAroundTime = turnAroundTime*1.0/pcbArrays[i].serveTime;
             int beginTime = pcbArrays[i].beginTime;
-            System.out.printf(i+"\t   "+turnAroundTime+"\t\t   ");
+            System.out.printf(pcbArrays[i].name+"\t   "+turnAroundTime+"\t\t   ");
             System.out.printf("%.1f", weightTurnAroundTime);
             System.out.print("\t\t  "+beginTime+"\n");
             averageT += turnAroundTime;
