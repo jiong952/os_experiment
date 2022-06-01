@@ -75,9 +75,6 @@ public class OPT {
                 }else {
                     set.remove(m+1);
                     queue.offer(m+1);
-//                    System.out.println("[m]:"+m);
-//                    System.out.println("m+1:"+ (m+1));
-//                    System.out.println("set:"+set);
                     break;
                 }
             }
@@ -95,7 +92,6 @@ public class OPT {
                         if(set.contains(i)) index = false;
                     }
                     if(index) {
-//                        System.out.println("退出m1");
                         break;
                     }
                     continue;
@@ -103,13 +99,10 @@ public class OPT {
                     //3.不在则放m1 m1+1
                     set.remove(m1);
                     queue.offer(m1);
-//                    System.out.println("m1:"+m1);
                     if(set.contains(m1+1)){
                         set.remove(m1+1);
                         queue.offer(m1+1);
-//                        System.out.println(m1+1);
                     }
-//                    System.out.println("set:"+set);
                     break;
                 }
             }
@@ -123,7 +116,6 @@ public class OPT {
                         if(set.contains(i)) index = false;
                     }
                     if(index) {
-//                        System.out.println("那完了");
                         break;
                     }
                     continue;
@@ -131,21 +123,16 @@ public class OPT {
                     //5.不在则放m2 m2+1
                     set.remove(m2);
                     queue.offer(m2);
-//                    System.out.println("m2:"+m2);
                     if(m2 == (instrNum-1)) {
-//                        System.out.println("拿到");
                         break;
                     }
                     if(set.contains(m2+1)){
                         set.remove(m2+1);
                         queue.offer(m2+1);
-//                        System.out.println(m2+1);
                     }
-//                    System.out.println("set:"+set);
                     break;
                 }
             }
-//            System.out.println("===================");
         }
         return queue;
     }

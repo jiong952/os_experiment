@@ -8,9 +8,9 @@ import java.util.*;
  * @since 2022-06-01 23:10
  */
 public class LRU {
-    private static int blockNum = 4; //内存块数
-    private static int pageSize = 10;  //页面存放指令的数目
-    private static int instrNum = 320;  //作业的指令数目
+    private static int blockNum = 3; //内存块数
+    private static int pageSize = 4;  //页面存放指令的数目
+    private static int instrNum = 20;  //作业的指令数目
     private static int pageNum ;  //页面数目 = instructionNum / PageSize
     private static int missingPageNum; //缺页数
     private static double missingPageRate; //缺页率 = MissingPageNum / instructionNum
@@ -19,11 +19,11 @@ public class LRU {
 
 
     public static void main(String[] args) {
-        OPT opt = new OPT();
-        opt.init();
+        LRU lru = new LRU();
+        lru.init();
         System.out.println("指令序列"+instrQue);
         System.out.println("页面数"+pageNum);
-        opt.run();
+        lru.run();
         missingPageRate = (missingPageNum*1.0)/instrNum ;
         System.out.println("缺页数"+missingPageNum);
         System.out.println("缺页率"+(missingPageRate));
@@ -35,7 +35,7 @@ public class LRU {
     public void init(){
         pageNum = instrNum / pageSize;
         blockMap = new HashMap<>();
-        instrQue = new OPT().getInstrQue();
+        instrQue = new LRU().getInstrQue();
     }
 
     /**
@@ -75,9 +75,6 @@ public class LRU {
                 }else {
                     set.remove(m+1);
                     queue.offer(m+1);
-//                    System.out.println("[m]:"+m);
-//                    System.out.println("m+1:"+ (m+1));
-//                    System.out.println("set:"+set);
                     break;
                 }
             }
@@ -95,7 +92,6 @@ public class LRU {
                         if(set.contains(i)) index = false;
                     }
                     if(index) {
-//                        System.out.println("退出m1");
                         break;
                     }
                     continue;
@@ -103,13 +99,10 @@ public class LRU {
                     //3.不在则放m1 m1+1
                     set.remove(m1);
                     queue.offer(m1);
-//                    System.out.println("m1:"+m1);
                     if(set.contains(m1+1)){
                         set.remove(m1+1);
                         queue.offer(m1+1);
-//                        System.out.println(m1+1);
                     }
-//                    System.out.println("set:"+set);
                     break;
                 }
             }
@@ -123,7 +116,6 @@ public class LRU {
                         if(set.contains(i)) index = false;
                     }
                     if(index) {
-//                        System.out.println("那完了");
                         break;
                     }
                     continue;
@@ -131,30 +123,28 @@ public class LRU {
                     //5.不在则放m2 m2+1
                     set.remove(m2);
                     queue.offer(m2);
-//                    System.out.println("m2:"+m2);
                     if(m2 == (instrNum-1)) {
-//                        System.out.println("拿到");
                         break;
                     }
                     if(set.contains(m2+1)){
                         set.remove(m2+1);
                         queue.offer(m2+1);
-//                        System.out.println(m2+1);
                     }
-//                    System.out.println("set:"+set);
                     break;
                 }
             }
-//            System.out.println("===================");
         }
         return queue;
     }
 
     public void run(){
-        OPT opt = new OPT();
+        LRU lru = new LRU();
+        //使用list来判断最近最久未使用 放在最前的就是最久
+        ArrayList<Integer> list_old = new ArrayList<>();
         for (int i = 0; i < instrNum; i++) {
             //取出指令
             int address = instrQue.poll();
+            list_old.add(address);
             //虚拟页号
             int pageCur = address / pageSize;
             //页内地址
@@ -174,10 +164,8 @@ public class LRU {
                     ArrayList<Integer> list = new ArrayList<>();
                     list.addAll(blockMap.values());
                     //遍历淘汰
-                    Iterator<Integer> iterator2 = instrQue.iterator();
-                    while (iterator2.hasNext()){
-                        Integer nextAddress = iterator2.next();
-                        int pageReplace = nextAddress / pageSize;
+                    for (int i2 = list_old.size() - 1; i2 >= 0; i2--) {
+                        int pageReplace = list_old.get(i2) / pageSize;
                         for (int i1 = 0; i1 < list.size(); i1++) {
                             if(list.get(i1).equals(pageReplace)){
                                 list.remove(i1);
@@ -194,7 +182,7 @@ public class LRU {
                     blockMap.put(index,pageCur);
                 }
             }
-            int block = opt.getKey(blockMap, pageCur);
+            int block = lru.getKey(blockMap, pageCur);
             System.out.println(address+"物理地址: 第" + block +"块 第"+ inIndex+"条指令");
             System.out.println("============");
         }
