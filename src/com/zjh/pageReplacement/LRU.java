@@ -4,10 +4,10 @@ import java.util.*;
 
 /**
  * @author 张俊鸿
- * @description: 最佳置换算法
- * @since 2022-06-01 16:15
+ * @description: 最近最久未使用
+ * @since 2022-06-01 23:10
  */
-public class OPT {
+public class LRU {
     private static int blockNum = 4; //内存块数
     private static int pageSize = 10;  //页面存放指令的数目
     private static int instrNum = 320;  //作业的指令数目
@@ -19,11 +19,11 @@ public class OPT {
 
 
     public static void main(String[] args) {
-        LRU lru = new LRU();
-        lru.init();
+        OPT opt = new OPT();
+        opt.init();
         System.out.println("指令序列"+instrQue);
         System.out.println("页面数"+pageNum);
-        lru.run();
+        opt.run();
         missingPageRate = (missingPageNum*1.0)/instrNum ;
         System.out.println("缺页数"+missingPageNum);
         System.out.println("缺页率"+(missingPageRate));
