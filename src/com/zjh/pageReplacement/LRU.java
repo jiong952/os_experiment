@@ -8,9 +8,9 @@ import java.util.*;
  * @since 2022-06-01 23:10
  */
 public class LRU {
-    private static int blockNum = 3; //内存块数
-    private static int pageSize = 4;  //页面存放指令的数目
-    private static int instrNum = 20;  //作业的指令数目
+    private static int blockNum = 4; //内存块数
+    private static int pageSize = 10;  //页面存放指令的数目
+    private static int instrNum = 320;  //作业的指令数目
     private static int pageNum ;  //页面数目 = instructionNum / PageSize
     private static int missingPageNum; //缺页数
     private static double missingPageRate; //缺页率 = MissingPageNum / instructionNum
