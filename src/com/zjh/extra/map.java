@@ -2,7 +2,7 @@ package com.zjh.extra;
 
 /**
  * @author 张俊鸿
- * @description:
+ * @description: 位示图
  * @since 2022-06-06 17:12
  */
 
@@ -10,42 +10,40 @@ package com.zjh.extra;
 import java.util.Random;
 import java.util.Scanner;
 
-/*
-    2000*32的位图
-        行号、列号、盘块号均从0开始
-*/
-public class 位示图{
+public class map {
     public static void main(String[] args) {
         Bitmap bitmap = new Bitmap();
         int i;
         do {
-            System.out.println("1.打印位示图");
-            System.out.println("2.打印盘块号");
-            System.out.println("3.申请");
-            System.out.println("4.释放");
-            System.out.println("5.退出");
-            System.out.print("请输入想要操作的序号：");
+            System.out.println("==========位示图=========");
+            System.out.println("0.申请盘块");
+            System.out.println("1.释放盘块");
+            System.out.println("2.打印位示图");
+            System.out.println("3.打印盘块号");
+            System.out.println("4.退出操作");
+            System.out.print("请输入想要操作的序号（0-4）：");
+            System.out.println("=======================");
             Scanner scanner = new Scanner(System.in);
             i = scanner.nextInt();
             switch (i) {
-                case 1:
-                    bitmap.printBM();
-                    break;
-                case 2:
-                    bitmap.printBlock();
-                    break;
-                case 3:
+                case 0:
                     System.out.print("请输入所需要的连续块数：");
                     int num = scanner.nextInt();
                     bitmap.distribution(num);
                     break;
-                case 4:
+                case 1:
                     bitmap.release();
                     break;
-                case 5:
+                case 2:
+                    bitmap.printBM();
+                    break;
+                case 3:
+                    bitmap.printBlock();
+                    break;
+                case 4:
                     break;
             }
-        } while (i != 5);
+        } while (i != 4);
         System.out.println("运行结束");
     }
 
@@ -53,7 +51,7 @@ public class 位示图{
 
 class Bitmap {
     // 行数
-    final int size = 32;
+    final int size = 2000;
     // 列数
     final int length = 32;
     // 位示图

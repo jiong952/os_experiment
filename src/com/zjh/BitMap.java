@@ -1,4 +1,4 @@
-package com.zjh.extra;
+package com.zjh;
 
 import java.util.ArrayList;
 import java.util.Scanner;
