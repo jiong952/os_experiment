@@ -8,7 +8,7 @@ import java.util.*;
  * @since 2022-06-01 16:15
  */
 public class OPT {
-    private static int blockNum = 4; //内存块数
+    private static int blockNum = 3; //内存块数
     private static int pageSize = 10;  //页面存放指令的数目
     private static int instrNum = 320;  //作业的指令数目
     private static int pageNum ;  //页面数目 = instructionNum / PageSize
@@ -19,14 +19,16 @@ public class OPT {
 
 
     public static void main(String[] args) {
-        LRU lru = new LRU();
-        lru.init();
-        System.out.println("指令序列"+instrQue);
-        System.out.println("页面数"+pageNum);
-        lru.run();
+        OPT opt = new OPT();
+        opt.init();
+        System.out.println("===========OPT==============");
+        System.out.println("OPT指令序列"+instrQue);
+        System.out.println("OPT页面数"+pageNum);
+        System.out.println("OPT内存块数"+blockNum);
+        opt.run();
         missingPageRate = (missingPageNum*1.0)/instrNum ;
-        System.out.println("缺页数"+missingPageNum);
-        System.out.println("缺页率"+(missingPageRate));
+        System.out.println("OPT缺页数"+missingPageNum);
+        System.out.println("OPT缺页率"+missingPageRate);
     }
 
     /**
@@ -35,9 +37,8 @@ public class OPT {
     public void init(){
         pageNum = instrNum / pageSize;
         blockMap = new HashMap<>();
-        instrQue = new OPT().getInstrQue();
+        instrQue = new OPT().getInstrQue_duplicate();
     }
-
     /**
      * 按照要求生成指令流序列
      * ① 在[0，319]的指令地址之间随机选取一起点m；
@@ -50,7 +51,7 @@ public class OPT {
      *
      * @return {@link Queue}<{@link Integer}>
      */
-    public Queue<Integer> getInstrQue(){
+    public Queue<Integer> getInstrQue_duplicate(){
         Random random = new Random();
         Queue<Integer> queue = new LinkedList<>();
         Set<Integer> set = new TreeSet<>();
@@ -183,7 +184,7 @@ public class OPT {
             }
             int block = opt.getKey(blockMap, pageCur);
             System.out.println(address+"物理地址: 第" + block +"块 第"+ inIndex+"条指令");
-            System.out.println("============");
+            System.out.println("======OPT======");
         }
     }
 

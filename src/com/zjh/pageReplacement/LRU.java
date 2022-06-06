@@ -8,7 +8,7 @@ import java.util.*;
  * @since 2022-06-01 23:10
  */
 public class LRU {
-    private static int blockNum = 4; //内存块数
+    private static int blockNum = 3; //内存块数
     private static int pageSize = 10;  //页面存放指令的数目
     private static int instrNum = 320;  //作业的指令数目
     private static int pageNum ;  //页面数目 = instructionNum / PageSize
@@ -21,12 +21,14 @@ public class LRU {
     public static void main(String[] args) {
         LRU lru = new LRU();
         lru.init();
-        System.out.println("指令序列"+instrQue);
-        System.out.println("页面数"+pageNum);
+        System.out.println("===========LRU==============");
+        System.out.println("LRU指令序列"+instrQue);
+        System.out.println("LRU页面数"+pageNum);
+        System.out.println("LRU内存块数"+blockNum);
         lru.run();
         missingPageRate = (missingPageNum*1.0)/instrNum ;
-        System.out.println("缺页数"+missingPageNum);
-        System.out.println("缺页率"+(missingPageRate));
+        System.out.println("LRU缺页数"+missingPageNum);
+        System.out.println("LRU缺页"+missingPageRate);
     }
 
     /**
@@ -184,7 +186,7 @@ public class LRU {
             }
             int block = lru.getKey(blockMap, pageCur);
             System.out.println(address+"物理地址: 第" + block +"块 第"+ inIndex+"条指令");
-            System.out.println("============");
+            System.out.println("=======LRU=====");
         }
     }
 
